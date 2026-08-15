@@ -1,6 +1,6 @@
 // ---------- Oppsett ----------
 const MODEL = "mistral-small-latest";
-const API_URL = "https://api.mistral.ai/v1/chat/completions";
+const API_URL = "https://api.mistral.ai/v1/conversations";
 
 const STOPORD = new Set([
   "jeg","du","han","hun","den","det","vi","dere","de","er","var","har","hadde",
@@ -101,14 +101,16 @@ async function sendSporsmal(sporsmal) {
     "Svar alltid på norsk, kort og presist. Bruk primært utdragene fra brukerhåndboken under " +
     "til å svare på spørsmål om bilen (infotainment, lading, nøkkelbatteri, funksjoner osv). " +
     "Hvis spørsmålet handler om noe som endrer seg over tid og ikke står i håndboken — for eksempel " +
-    "gjeldende Xcombo-koder, kampanjer, priser eller nyheter — si det ærlig i stedet for å gjette.";
+    "gjeldende Xcombo-koder, kampanjer, priser eller nyheter — bruk nettsøk-verktøyet for å finne " +
+    "oppdatert informasjon i stedet. Hvis du er usikker, si det ærlig i stedet for å gjette.";
 
   const body = {
     model: MODEL,
-    messages: [
+    inputs: [
       { role: "system", content: systemInstruction },
-      { role: "user", content: `Utdrag fra brukerhåndboken:\n\n${kontekst}\n\n---\n\nSpørsmål: ${sporsmal}` }
-    ]
+      { role: "user", content: `${kontekst}\n\n---\n\nSpørsmål: ${sporsmal}` }
+    ],
+    tools: [{ type: "web_search" }]
   };
 
   try {
@@ -130,8 +132,12 @@ async function sendSporsmal(sporsmal) {
       return;
     }
 
+    const meldingOutput = data?.outputs?.find(o => o.type === "message.output");
     const svarTekst =
-      data?.choices?.[0]?.message?.content ||
+      meldingOutput?.content
+        ?.filter(c => c.type === "text")
+        ?.map(c => c.text)
+        ?.join("") ||
       "Jeg fikk ikke noe svar. Prøv å omformulere spørsmålet.";
 
     leggTilMelding(svarTekst, "bot");
