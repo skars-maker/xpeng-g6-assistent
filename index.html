@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XPeng G6 Assistent 2026</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- FORSIDE -->
+  <header class="hero">
+    <div class="hero-bg">
+      <svg class="car-silhouette" viewBox="0 0 800 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <ellipse cx="400" cy="220" rx="360" ry="18" fill="rgba(0,0,0,0.5)"/>
+        <path d="M60 190
+                 C 60 150, 100 140, 140 130
+                 L 190 90
+                 C 230 60, 300 45, 380 45
+                 C 460 45, 520 60, 560 90
+                 L 610 130
+                 C 660 140, 720 150, 730 178
+                 C 735 195, 720 205, 700 205
+                 L 90 205
+                 C 70 205, 58 200, 60 190 Z"
+              fill="url(#carGradient)" stroke="#00E39A" stroke-width="1.5"/>
+        <path d="M215 95 C 250 68, 320 55, 380 55 C 440 55, 495 68, 535 95 L 560 128 L 195 128 Z"
+              fill="#0c0f0d" opacity="0.85"/>
+        <circle cx="185" cy="205" r="34" fill="#111" stroke="#00E39A" stroke-width="3"/>
+        <circle cx="185" cy="205" r="14" fill="#00E39A" opacity="0.7"/>
+        <circle cx="605" cy="205" r="34" fill="#111" stroke="#00E39A" stroke-width="3"/>
+        <circle cx="605" cy="205" r="14" fill="#00E39A" opacity="0.7"/>
+        <rect x="60" y="150" width="640" height="4" fill="#00E39A" opacity="0.6"/>
+        <defs>
+          <linearGradient id="carGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a1d1c"/>
+            <stop offset="100%" stop-color="#050605"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <span class="eyebrow">XPENG G6 · MY2026</span>
+      <h1>Din personlige <span class="accent">G6-assistent</span></h1>
+      <p>Spør om infotainment, lading, batteri i nøkkelen, funksjoner og mer — rett fra
+         brukerhåndboken. Alltid tilgjengelig, alltid gratis.</p>
+      <a href="#chat" class="cta-btn">Start chat ↓</a>
+    </div>
+  </header>
+
+  <!-- CHAT -->
+  <main id="chat" class="chat-section">
+    <div class="chat-card">
+      <div class="chat-header">
+        <div class="chat-title">
+          <span class="dot"></span>
+          G6 Assistent
+        </div>
+        <button id="settingsBtn" class="icon-btn" title="Innstillinger">⚙</button>
+      </div>
+
+      <div id="messages" class="messages">
+        <div class="msg bot">
+          Hei! Jeg kjenner hele brukerhåndboken for XPeng G6 2026. Spør meg om alt fra
+          infotainment-systemet til lading og nøkkelbatteri — eller be meg søke opp gjeldende
+          Xcombo-koder.
+        </div>
+      </div>
+
+      <form id="chatForm" class="chat-input-row">
+        <input id="chatInput" type="text" placeholder="Skriv spørsmålet ditt..." autocomplete="off" required>
+        <button type="submit" id="sendBtn">Send</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    Uoffisiell assistent bygget for privat bruk · basert på XPeng G6 2026 brukerhåndbok
+  </footer>
+
+  <!-- INNSTILLINGER (API-nøkkel) -->
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-box">
+      <h2>Innstillinger</h2>
+      <p>Lim inn din gratis Google Gemini API-nøkkel. Den lagres kun i din egen nettleser.</p>
+      <input id="apiKeyInput" type="text" placeholder="AIza...">
+      <div class="modal-buttons">
+        <button id="saveKeyBtn" class="cta-btn small">Lagre</button>
+        <button id="closeSettingsBtn" class="ghost-btn small">Lukk</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="manual-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
