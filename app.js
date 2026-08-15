@@ -90,9 +90,17 @@ async function sendSporsmal(sporsmal) {
   }
 
   const relevanteSider = finnRelevanteSider(sporsmal);
-  const kontekst = relevanteSider
+  let kontekst = relevanteSider
     .map(s => `[Side ${s.side}]\n${s.tekst}`)
     .join("\n\n---\n\n");
+
+  const gjelderXcombo = /xcombo|combo|kode/i.test(sporsmal);
+  if (gjelderXcombo) {
+    const xcomboTekst = XCOMBO_KODER
+      .map(x => `${x.kode} - ${x.funksjon} - ${x.merknad}`)
+      .join("\n");
+    kontekst += `\n\n---\n\nKjente Xcombo-koder (lokal referanseliste, kan være ufullstendig for koder merket "ufullstendig"):\n${xcomboTekst}`;
+  }
 
   const lastende = leggTilMelding("Søker i håndboken ...", "bot loading");
 
@@ -128,6 +136,9 @@ async function sendSporsmal(sporsmal) {
     "Søk gjerne med flere varianter av søkeordet: 'XCOMBO', 'X-Combo', 'XPENG G6 combo code', kombinert " +
     "med selve funksjonen brukeren spør om (f.eks. 'G6 XCOMBO climate' eller 'G6 XCOMBO unlock " +
     "lights').\n\n" +
+    "Når konteksten under inneholder en seksjon med 'Kjente Xcombo-koder (lokal referanseliste)': sjekk " +
+    "denne FØRST før du søker på nett. Bruk nettsøk i tillegg for å finne flere koder utover listen, og " +
+    "for å bekrefte eller utfylle koder i listen som er merket 'ufullstendig'.\n\n" +
     "For alt annet som endrer seg over tid og ikke står i håndboken (kampanjer, priser, nyheter): bruk " +
     "også nettsøk-verktøyet.\n\n" +
     "Hvis du er usikker eller ikke finner noe relevant, si det ærlig i stedet for å gjette eller dikte opp koder.";
