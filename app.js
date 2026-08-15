@@ -117,6 +117,17 @@ async function sendSporsmal(sporsmal) {
     "forslag i stedet for bare å si at du ikke fant noe. Vis 2-4 lignende eksempler med kort forklaring " +
     "på hva de gjør og hvilken kilde de kommer fra, og si tydelig at de ikke er en eksakt match men kan " +
     "være av interesse.\n\n" +
+    "Når du søker etter Xcombo-koder, bruk nettsøket til å lete spesifikt på disse kildene, ikke bare " +
+    "xcombos.com:\n" +
+    "- xcombos.com (mest dedikerte stedet for deling av Xcombo-oppsett)\n" +
+    "- XPeng-Fahrer Community (tysk forum, egne tråder for X-Combos)\n" +
+    "- Reddit r/Xpeng (egne 'X-combo Share here'-tråder)\n" +
+    "- Forum Automobile Propre (fransk forum, egen tråd for G6 X-Combo-koder)\n" +
+    "- GoingElectric.de (koder delt i diskusjonstråder, f.eks. som firesifrede tallkoder)\n" +
+    "- Tweakers.net (nederlandsk XPeng-tråd med delte koder)\n\n" +
+    "Søk gjerne med flere varianter av søkeordet: 'XCOMBO', 'X-Combo', 'XPENG G6 combo code', kombinert " +
+    "med selve funksjonen brukeren spør om (f.eks. 'G6 XCOMBO climate' eller 'G6 XCOMBO unlock " +
+    "lights').\n\n" +
     "For alt annet som endrer seg over tid og ikke står i håndboken (kampanjer, priser, nyheter): bruk " +
     "også nettsøk-verktøyet.\n\n" +
     "Hvis du er usikker eller ikke finner noe relevant, si det ærlig i stedet for å gjette eller dikte opp koder.";
