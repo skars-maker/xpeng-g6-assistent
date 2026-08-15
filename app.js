@@ -44,6 +44,15 @@ function settOppInnstillinger() {
     if (verdi) {
       localStorage.setItem("mistral_api_key", verdi);
       modal.classList.add("hidden");
+      return;
+    }
+
+    if (hentApiNokkel()) {
+      const bekreftet = confirm("Dette vil slette den lagrede API-nøkkelen. Er du sikker?");
+      if (bekreftet) {
+        localStorage.removeItem("mistral_api_key");
+        modal.classList.add("hidden");
+      }
     }
   });
 

@@ -48,7 +48,7 @@ body {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent 50%, var(--bg) 100%);
+  background: linear-gradient(to bottom, transparent 60%, var(--bg) 100%);
 }
 
 /*
