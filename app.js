@@ -21,14 +21,23 @@ function settOppInnstillinger() {
   const settingsBtn = document.getElementById("settingsBtn");
   const saveBtn = document.getElementById("saveKeyBtn");
   const closeBtn = document.getElementById("closeSettingsBtn");
+  const toggleKeyBtn = document.getElementById("toggleKeyBtn");
 
   const apneModal = () => {
     input.value = hentApiNokkel();
+    input.type = "password";
+    toggleKeyBtn.textContent = "Vis";
     modal.classList.remove("hidden");
   };
 
   settingsBtn.addEventListener("click", apneModal);
   closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
+
+  toggleKeyBtn.addEventListener("click", () => {
+    const skalVises = input.type === "password";
+    input.type = skalVises ? "text" : "password";
+    toggleKeyBtn.textContent = skalVises ? "Skjul" : "Vis";
+  });
 
   saveBtn.addEventListener("click", () => {
     const verdi = input.value.trim();
