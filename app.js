@@ -142,12 +142,18 @@ async function sendSporsmal(sporsmal) {
     }
 
     const meldingOutput = data?.outputs?.find(o => o.type === "message.output");
-    const svarTekst =
-      meldingOutput?.content
-        ?.filter(c => c.type === "text")
-        ?.map(c => c.text)
-        ?.join("") ||
-      "Jeg fikk ikke noe svar. Prøv å omformulere spørsmålet.";
+    const content = meldingOutput?.content;
+    let svarTekst;
+    if (typeof content === "string") {
+      svarTekst = content;
+    } else if (Array.isArray(content)) {
+      svarTekst = content
+        .filter(chunk => chunk.type === "text")
+        .map(chunk => chunk.text)
+        .join("");
+    } else {
+      svarTekst = "Jeg fikk ikke noe svar. Prøv å omformulere spørsmålet.";
+    }
 
     leggTilMelding(svarTekst, "bot");
   } catch (err) {
