@@ -59,9 +59,16 @@ body {
 */
 
 .hero-content {
-  position: relative;
+  position: absolute;
+  top: 48px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 2;
   max-width: 640px;
+  width: 90%;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 16px;
+  padding: 24px 28px;
 }
 
 .eyebrow {
