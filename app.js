@@ -105,11 +105,9 @@ async function sendSporsmal(sporsmal) {
     "oppdatert informasjon i stedet. Hvis du er usikker, si det ærlig i stedet for å gjette.";
 
   const body = {
-    model: MODEL,
-    inputs: [
-      { role: "system", content: systemInstruction },
-      { role: "user", content: `${kontekst}\n\n---\n\nSpørsmål: ${sporsmal}` }
-    ],
+    model: "mistral-small-latest",
+    instructions: systemInstruction,
+    inputs: `Utdrag fra brukerhåndboken:\n\n${kontekst}\n\n---\n\nSpørsmål: ${sporsmal}`,
     tools: [{ type: "web_search" }]
   };
 
