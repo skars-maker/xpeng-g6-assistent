@@ -111,6 +111,12 @@ async function sendSporsmal(sporsmal) {
     "eksisterende koder som matcher det brukeren spør etter. Presenter gjerne 2-4 konkrete forslag til " +
     "koder med kort forklaring på hva de gjør, hvis du finner relevante treff. Oppgi at kildene er " +
     "brukerdelte og ikke offisielt fra XPeng.\n\n" +
+    "Hvis du ikke finner en eksakt Xcombo-kode som matcher det brukeren spurte om, men du finner " +
+    "LIGNENDE koder fra xcombos.com eller andre kilder (samme kategori trigger eller handling, f.eks. " +
+    "andre koder som bruker sjåførdør, gir-skifte, eller massasje/setefunksjoner), presenter disse som " +
+    "forslag i stedet for bare å si at du ikke fant noe. Vis 2-4 lignende eksempler med kort forklaring " +
+    "på hva de gjør og hvilken kilde de kommer fra, og si tydelig at de ikke er en eksakt match men kan " +
+    "være av interesse.\n\n" +
     "For alt annet som endrer seg over tid og ikke står i håndboken (kampanjer, priser, nyheter): bruk " +
     "også nettsøk-verktøyet.\n\n" +
     "Hvis du er usikker eller ikke finner noe relevant, si det ærlig i stedet for å gjette eller dikte opp koder.";
