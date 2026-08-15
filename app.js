@@ -1,6 +1,6 @@
 // ---------- Oppsett ----------
-const MODEL = "gemini-2.5-flash";
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+const MODEL = "mistral-small-latest";
+const API_URL = "https://api.mistral.ai/v1/chat/completions";
 
 const STOPORD = new Set([
   "jeg","du","han","hun","den","det","vi","dere","de","er","var","har","hadde",
@@ -12,7 +12,7 @@ const STOPORD = new Set([
 
 // ---------- API-nøkkel håndtering ----------
 function hentApiNokkel() {
-  return localStorage.getItem("gemini_api_key") || "";
+  return localStorage.getItem("mistral_api_key") || "";
 }
 
 function settOppInnstillinger() {
@@ -33,7 +33,7 @@ function settOppInnstillinger() {
   saveBtn.addEventListener("click", () => {
     const verdi = input.value.trim();
     if (verdi) {
-      localStorage.setItem("gemini_api_key", verdi);
+      localStorage.setItem("mistral_api_key", verdi);
       modal.classList.add("hidden");
     }
   });
@@ -96,27 +96,19 @@ async function sendSporsmal(sporsmal) {
 
   const lastende = leggTilMelding("Søker i håndboken ...", "bot loading");
 
-  const systemInstruction = {
-    parts: [{
-      text:
-        "Du er en hjelpsom assistent for eiere av XPeng G6 2026 (LHD, europeisk modell). " +
-        "Svar alltid på norsk, kort og presist. Bruk primært utdragene fra brukerhåndboken under " +
-        "til å svare på spørsmål om bilen (infotainment, lading, nøkkelbatteri, funksjoner osv). " +
-        "Hvis spørsmålet handler om noe som endrer seg over tid og ikke står i håndboken — for eksempel " +
-        "gjeldende Xcombo-koder, kampanjer, priser eller nyheter — bruk Google-søk-verktøyet for å finne " +
-        "oppdatert informasjon i stedet. Hvis du er usikker, si det ærlig i stedet for å gjette."
-    }]
-  };
+  const systemInstruction =
+    "Du er en hjelpsom assistent for eiere av XPeng G6 2026 (LHD, europeisk modell). " +
+    "Svar alltid på norsk, kort og presist. Bruk primært utdragene fra brukerhåndboken under " +
+    "til å svare på spørsmål om bilen (infotainment, lading, nøkkelbatteri, funksjoner osv). " +
+    "Hvis spørsmålet handler om noe som endrer seg over tid og ikke står i håndboken — for eksempel " +
+    "gjeldende Xcombo-koder, kampanjer, priser eller nyheter — si det ærlig i stedet for å gjette.";
 
   const body = {
-    system_instruction: systemInstruction,
-    contents: [{
-      role: "user",
-      parts: [{
-        text: `Utdrag fra brukerhåndboken:\n\n${kontekst}\n\n---\n\nSpørsmål: ${sporsmal}`
-      }]
-    }],
-    tools: [{ google_search: {} }]
+    model: MODEL,
+    messages: [
+      { role: "system", content: systemInstruction },
+      { role: "user", content: `Utdrag fra brukerhåndboken:\n\n${kontekst}\n\n---\n\nSpørsmål: ${sporsmal}` }
+    ]
   };
 
   try {
@@ -124,7 +116,7 @@ async function sendSporsmal(sporsmal) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-goog-api-key": apiKey
+        "Authorization": "Bearer " + apiKey
       },
       body: JSON.stringify(body)
     });
@@ -139,13 +131,13 @@ async function sendSporsmal(sporsmal) {
     }
 
     const svarTekst =
-      data?.candidates?.[0]?.content?.parts?.map(p => p.text).join("") ||
+      data?.choices?.[0]?.message?.content ||
       "Jeg fikk ikke noe svar. Prøv å omformulere spørsmålet.";
 
     leggTilMelding(svarTekst, "bot");
   } catch (err) {
     lastende.remove();
-    leggTilMelding(`Klarte ikke å kontakte Gemini API: ${err.message}`, "bot error");
+    leggTilMelding(`Klarte ikke å kontakte Mistral API: ${err.message}`, "bot error");
   }
 }
 
