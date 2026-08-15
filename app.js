@@ -1,5 +1,5 @@
 // ---------- Oppsett ----------
-const MODEL = "gemini-3-flash-preview";
+const MODEL = "gemini-2.5-flash";
 const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 const STOPORD = new Set([
