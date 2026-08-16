@@ -349,10 +349,54 @@ function settOppTaleGjenkjenning() {
 }
 
 // ---------- Skjermtastatur-håndtering ----------
+// Fryser --vh til den faktiske, opprinnelige viewport-høyden. Uten dette bruker
+// .hero og .messages rå "vh"-enheter, som i enkelte innebygde nettlesere (bl.a.
+// biler) regnes ut på nytt når skjermtastaturet åpner window.innerHeight krymper.
+// Det tvinger frem en full reflow (.hero krymper kraftig siden den er 55vh), og
+// det er DENNE reflowen - ikke vår egen scroll-kode - som fikk enkelte nettlesere
+// til å nullstille scrollposisjonen til toppen. Ved å fryse --vh unngår vi at
+// tastaturet i det hele tatt trigger denne reflowen.
+function settOppFastViewportHoyde() {
+  const settVh = () => {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+    console.log("[tastatur-diagnostikk] --vh satt til", vh, "px (innerHeight:", window.innerHeight, ")");
+  };
+
+  settVh();
+
+  // Kun ekte rotasjon/oppløsningsendring skal oppdatere --vh på nytt - ALDRI
+  // window "resize" eller visualViewport "resize", siden begge kan trigges av
+  // at tastaturet åpnes/lukkes i enkelte nettlesere.
+  window.addEventListener("orientationchange", () => {
+    setTimeout(settVh, 300);
+  });
+}
+
 function scrollChatInputInnISyne() {
   const input = document.getElementById("chatInput");
-  if (input) {
-    input.scrollIntoView({ behavior: "smooth", block: "center" });
+  if (!input) return;
+
+  const vv = window.visualViewport;
+  const synligHoyde = vv ? vv.height : window.innerHeight;
+  const synligTopp = vv ? vv.offsetTop : 0;
+  const synligBunn = synligTopp + synligHoyde;
+  const rect = input.getBoundingClientRect();
+
+  console.log(
+    "[tastatur-diagnostikk] scrollY:", window.scrollY,
+    "| innerHeight:", window.innerHeight,
+    "| visualViewport:", vv ? { height: vv.height, offsetTop: vv.offsetTop } : "ikke støttet",
+    "| input.top:", rect.top, "input.bottom:", rect.bottom
+  );
+
+  const margin = 16;
+  if (rect.bottom > synligBunn - margin || rect.top < synligTopp) {
+    const maalScrollY = Math.max(0, window.scrollY + (rect.bottom - synligBunn) + margin);
+    console.log("[tastatur-diagnostikk] scroller til scrollY =", maalScrollY);
+    window.scrollTo({ top: maalScrollY, behavior: "smooth" });
+  } else {
+    console.log("[tastatur-diagnostikk] input er allerede synlig, scroller ikke");
   }
 }
 
@@ -375,6 +419,7 @@ function settOppTastaturHandtering() {
 
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
+  settOppFastViewportHoyde();
   settOppInnstillinger();
   settOppTaleGjenkjenning();
   settOppTastaturHandtering();

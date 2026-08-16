@@ -6,6 +6,7 @@
   --text: #eef1ef;
   --text-dim: #9aa39d;
   --border: #1f2422;
+  --vh: 1vh;
 }
 
 * { box-sizing: border-box; }
@@ -20,7 +21,7 @@ body {
 /* HERO */
 .hero {
   position: relative;
-  min-height: 55vh;
+  min-height: calc(var(--vh) * 55);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -183,7 +184,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  max-height: 55vh;
+  max-height: calc(var(--vh) * 55);
   overflow-y: auto;
 }
 
