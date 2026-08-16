@@ -417,11 +417,44 @@ function settOppTastaturHandtering() {
   }
 }
 
+// ---------- Midlertidig diagnostikk-boks ----------
+function settOppDiagnostikkBoks() {
+  const boks = document.getElementById("diagnostikkBoks");
+  const input = document.getElementById("chatInput");
+  if (!boks || !input) return;
+
+  const oppdaterDiagnostikk = () => {
+    const vv = window.visualViewport;
+    const rect = input.getBoundingClientRect();
+    const harFokus = document.activeElement === input;
+
+    boks.textContent =
+      `innerHeight: ${window.innerHeight}\n` +
+      `visualViewport.height: ${vv ? vv.height : "N/A"}\n` +
+      `visualViewport.offsetTop: ${vv ? vv.offsetTop : "N/A"}\n` +
+      `scrollY: ${window.scrollY}\n` +
+      `input har fokus: ${harFokus}\n` +
+      `input.top: ${rect.top}`;
+  };
+
+  oppdaterDiagnostikk();
+
+  window.addEventListener("resize", oppdaterDiagnostikk);
+  window.addEventListener("scroll", oppdaterDiagnostikk);
+  input.addEventListener("focus", oppdaterDiagnostikk);
+  input.addEventListener("blur", oppdaterDiagnostikk);
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", oppdaterDiagnostikk);
+  }
+}
+
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
   settOppFastViewportHoyde();
   settOppInnstillinger();
   settOppTaleGjenkjenning();
+  settOppDiagnostikkBoks();
   settOppTastaturHandtering();
   visForslagsSporsmal(tilfeldigUtvalg(hentAlleForslagsSporsmal(), 4));
 
