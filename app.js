@@ -281,9 +281,66 @@ async function sendSporsmal(sporsmal) {
   }
 }
 
+// ---------- Talegjenkjenning ----------
+function settOppTaleGjenkjenning() {
+  const micBtn = document.getElementById("micBtn");
+  const input = document.getElementById("chatInput");
+  if (!micBtn || !input) return;
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    micBtn.addEventListener("click", () => {
+      leggTilMelding("Talegjenkjenning ikke tilgjengelig i denne nettleseren", "bot error");
+    });
+    return;
+  }
+
+  const recognition = new SpeechRecognition();
+  recognition.lang = "nb-NO";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  let lytter = false;
+
+  recognition.addEventListener("start", () => {
+    lytter = true;
+    micBtn.classList.add("listening");
+    micBtn.title = "Lytter...";
+  });
+
+  recognition.addEventListener("end", () => {
+    lytter = false;
+    micBtn.classList.remove("listening");
+    micBtn.title = "Snakk inn spørsmål";
+  });
+
+  recognition.addEventListener("result", (e) => {
+    const gjenkjentTekst = e.results[0][0].transcript;
+    input.value = gjenkjentTekst;
+    input.focus();
+  });
+
+  recognition.addEventListener("error", () => {
+    leggTilMelding("Talegjenkjenning ikke tilgjengelig i denne nettleseren", "bot error");
+  });
+
+  micBtn.addEventListener("click", () => {
+    if (lytter) {
+      recognition.stop();
+      return;
+    }
+    try {
+      recognition.start();
+    } catch (err) {
+      leggTilMelding("Talegjenkjenning ikke tilgjengelig i denne nettleseren", "bot error");
+    }
+  });
+}
+
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
   settOppInnstillinger();
+  settOppTaleGjenkjenning();
   visForslagsSporsmal(tilfeldigUtvalg(hentAlleForslagsSporsmal(), 4));
 
   const form = document.getElementById("chatForm");
