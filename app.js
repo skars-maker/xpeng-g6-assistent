@@ -89,6 +89,66 @@ function finnRelevanteSider(sporsmal, antall = 6) {
     .map(x => x.side);
 }
 
+// ---------- Forslag til spørsmål ----------
+function hentAlleForslagsSporsmal() {
+  const alle = [];
+  for (const kategori in SUGGESTED_QUESTIONS) {
+    SUGGESTED_QUESTIONS[kategori].sporsmal.forEach(sp => alle.push(sp));
+  }
+  return alle;
+}
+
+function tilfeldigUtvalg(liste, antall) {
+  const kopi = liste.slice();
+  for (let i = kopi.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const midlertidig = kopi[i];
+    kopi[i] = kopi[j];
+    kopi[j] = midlertidig;
+  }
+  return kopi.slice(0, antall);
+}
+
+function visForslagsSporsmal(sporsmalListe) {
+  const container = document.getElementById("suggestedChips");
+  if (!container) return;
+
+  container.innerHTML = "";
+  sporsmalListe.forEach(sp => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "suggestion-chip";
+    chip.textContent = sp;
+    chip.addEventListener("click", () => {
+      const input = document.getElementById("chatInput");
+      input.value = sp;
+      input.focus();
+    });
+    container.appendChild(chip);
+  });
+}
+
+function finnMatchendeKategori(sporsmal) {
+  const tekstLav = sporsmal.toLowerCase();
+  for (const kategori in SUGGESTED_QUESTIONS) {
+    const treffer = SUGGESTED_QUESTIONS[kategori].nokkelord.some(ord => tekstLav.includes(ord));
+    if (treffer) return kategori;
+  }
+  return null;
+}
+
+function oppdaterForslagEtterSporsmal(sporsmal) {
+  const kategori = finnMatchendeKategori(sporsmal);
+  if (!kategori) return;
+
+  const stiltSporsmalLav = sporsmal.trim().toLowerCase();
+  const kandidater = SUGGESTED_QUESTIONS[kategori].sporsmal.filter(
+    sp => sp.trim().toLowerCase() !== stiltSporsmalLav
+  );
+
+  visForslagsSporsmal(tilfeldigUtvalg(kandidater, 5));
+}
+
 // ---------- Chat UI ----------
 function leggTilMelding(tekst, type) {
   const messages = document.getElementById("messages");
@@ -101,6 +161,8 @@ function leggTilMelding(tekst, type) {
 }
 
 async function sendSporsmal(sporsmal) {
+  oppdaterForslagEtterSporsmal(sporsmal);
+
   const apiKey = hentApiNokkel();
   if (!apiKey) {
     document.getElementById("settingsModal").classList.remove("hidden");
@@ -211,6 +273,7 @@ async function sendSporsmal(sporsmal) {
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
   settOppInnstillinger();
+  visForslagsSporsmal(tilfeldigUtvalg(hentAlleForslagsSporsmal(), 5));
 
   const form = document.getElementById("chatForm");
   const input = document.getElementById("chatInput");
