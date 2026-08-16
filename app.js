@@ -133,9 +133,6 @@ function visForslagsSporsmal(sporsmalListe) {
       const input = document.getElementById("chatInput");
       input.value = sp;
       input.focus();
-      setTimeout(() => {
-        input.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 300);
     });
     container.appendChild(chip);
   });
@@ -351,10 +348,36 @@ function settOppTaleGjenkjenning() {
   });
 }
 
+// ---------- Skjermtastatur-håndtering ----------
+function scrollChatInputInnISyne() {
+  const input = document.getElementById("chatInput");
+  if (input) {
+    input.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
+function settOppTastaturHandtering() {
+  const input = document.getElementById("chatInput");
+  if (!input) return;
+
+  input.addEventListener("focus", () => {
+    setTimeout(scrollChatInputInnISyne, 300);
+  });
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", () => {
+      if (document.activeElement === input) {
+        scrollChatInputInnISyne();
+      }
+    });
+  }
+}
+
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
   settOppInnstillinger();
   settOppTaleGjenkjenning();
+  settOppTastaturHandtering();
   visForslagsSporsmal(tilfeldigUtvalg(hentAlleForslagsSporsmal(), 4));
 
   const form = document.getElementById("chatForm");
