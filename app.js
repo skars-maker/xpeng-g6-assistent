@@ -133,6 +133,9 @@ function visForslagsSporsmal(sporsmalListe) {
       const input = document.getElementById("chatInput");
       input.value = sp;
       input.focus();
+      setTimeout(() => {
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 300);
     });
     container.appendChild(chip);
   });
