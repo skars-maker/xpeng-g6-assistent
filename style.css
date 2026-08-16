@@ -213,10 +213,16 @@ body {
 .msg.error { background: #2a1414; border: 1px solid #5c2323; color: #ffb4b4; }
 
 .suggested-chips {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   padding: 0 20px 12px;
+}
+
+@media (max-width: 500px) {
+  .suggested-chips {
+    grid-template-columns: 1fr;
+  }
 }
 
 .suggestion-chip {

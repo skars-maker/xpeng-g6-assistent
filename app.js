@@ -146,7 +146,7 @@ function oppdaterForslagEtterSporsmal(sporsmal) {
     sp => sp.trim().toLowerCase() !== stiltSporsmalLav
   );
 
-  visForslagsSporsmal(tilfeldigUtvalg(kandidater, 5));
+  visForslagsSporsmal(tilfeldigUtvalg(kandidater, 4));
 }
 
 // ---------- Chat UI ----------
@@ -273,7 +273,7 @@ async function sendSporsmal(sporsmal) {
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
   settOppInnstillinger();
-  visForslagsSporsmal(tilfeldigUtvalg(hentAlleForslagsSporsmal(), 5));
+  visForslagsSporsmal(tilfeldigUtvalg(hentAlleForslagsSporsmal(), 4));
 
   const form = document.getElementById("chatForm");
   const input = document.getElementById("chatInput");
