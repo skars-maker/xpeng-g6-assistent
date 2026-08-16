@@ -255,7 +255,7 @@ async function sendSporsmal(sporsmal) {
 
     if (!res.ok) {
       const feilmelding = data?.error?.message || "Ukjent feil";
-      leggTilMelding(`Noe gikk galt: ${feilmelding}`, "bot error");
+      leggTilMelding(`Feil ved henting av svar (HTTP ${res.status}): ${feilmelding}`, "bot error");
       return;
     }
 
@@ -277,7 +277,7 @@ async function sendSporsmal(sporsmal) {
     leggTilMelding(visningsTekst, "bot");
   } catch (err) {
     lastende.remove();
-    leggTilMelding(`Klarte ikke å kontakte Mistral API: ${err.message}`, "bot error");
+    leggTilMelding(`Nettverksfeil - kunne ikke nå Mistral API: ${err.message}`, "bot error");
   }
 }
 
@@ -289,9 +289,7 @@ function settOppTaleGjenkjenning() {
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
-    micBtn.addEventListener("click", () => {
-      leggTilMelding("Talegjenkjenning ikke tilgjengelig i denne nettleseren", "bot error");
-    });
+    leggTilMelding("Talegjenkjenning støttes ikke i denne nettleseren", "bot error");
     return;
   }
 
@@ -303,6 +301,7 @@ function settOppTaleGjenkjenning() {
   let lytter = false;
 
   recognition.addEventListener("start", () => {
+    console.log("Talegjenkjenning startet");
     lytter = true;
     micBtn.classList.add("listening");
     micBtn.title = "Lytter...";
@@ -320,8 +319,8 @@ function settOppTaleGjenkjenning() {
     input.focus();
   });
 
-  recognition.addEventListener("error", () => {
-    leggTilMelding("Talegjenkjenning ikke tilgjengelig i denne nettleseren", "bot error");
+  recognition.addEventListener("error", (event) => {
+    leggTilMelding("Mikrofonfeil: " + event.error, "bot error");
   });
 
   micBtn.addEventListener("click", () => {
@@ -332,7 +331,7 @@ function settOppTaleGjenkjenning() {
     try {
       recognition.start();
     } catch (err) {
-      leggTilMelding("Talegjenkjenning ikke tilgjengelig i denne nettleseren", "bot error");
+      leggTilMelding("Mikrofonfeil: " + err.message, "bot error");
     }
   });
 }
