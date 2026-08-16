@@ -302,27 +302,39 @@ function settOppTaleGjenkjenning() {
   recognition.maxAlternatives = 1;
 
   let lytter = false;
+  let timeoutId = null;
 
   recognition.addEventListener("start", () => {
     console.log("Talegjenkjenning startet");
     lytter = true;
     micBtn.classList.add("listening");
     micBtn.title = "Lytter...";
+
+    timeoutId = setTimeout(() => {
+      leggTilMelding(
+        "Ingen svar fra talegjenkjenningstjenesten - dette skjer ofte i innebygde bil-nettlesere som mangler tilgang til Googles talegjenkjenningsserver",
+        "bot error"
+      );
+      recognition.stop();
+    }, 8000);
   });
 
   recognition.addEventListener("end", () => {
+    clearTimeout(timeoutId);
     lytter = false;
     micBtn.classList.remove("listening");
     micBtn.title = "Snakk inn spørsmål";
   });
 
   recognition.addEventListener("result", (e) => {
+    clearTimeout(timeoutId);
     const gjenkjentTekst = e.results[0][0].transcript;
     input.value = gjenkjentTekst;
     input.focus();
   });
 
   recognition.addEventListener("error", (event) => {
+    clearTimeout(timeoutId);
     leggTilMelding("Mikrofonfeil: " + event.error, "bot error");
   });
 
