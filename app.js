@@ -2,6 +2,16 @@
 const MODEL = "mistral-small-latest";
 const API_URL = "https://api.mistral.ai/v1/conversations";
 
+const HILSNINGS_ADJEKTIVER = [
+  "omsorgsfulle", "flotte", "snille", "søte", "energiske", "strukturerte",
+  "smarte", "strålende", "fantastiske", "hyggelige", "positive", "inspirerende"
+];
+
+function tilfeldigHilsen() {
+  const adjektiv = HILSNINGS_ADJEKTIVER[Math.floor(Math.random() * HILSNINGS_ADJEKTIVER.length)];
+  return `Hei, ${adjektiv} Kristin! 😊`;
+}
+
 const STOPORD = new Set([
   "jeg","du","han","hun","den","det","vi","dere","de","er","var","har","hadde",
   "og","i","på","til","med","om","for","av","en","et","som","hva","hvordan",
@@ -263,7 +273,8 @@ async function sendSporsmal(sporsmal) {
       svarTekst = "Jeg fikk ikke noe svar. Prøv å omformulere spørsmålet.";
     }
 
-    leggTilMelding(svarTekst, "bot");
+    const visningsTekst = `${tilfeldigHilsen()}\n${svarTekst}`;
+    leggTilMelding(visningsTekst, "bot");
   } catch (err) {
     lastende.remove();
     leggTilMelding(`Klarte ikke å kontakte Mistral API: ${err.message}`, "bot error");
