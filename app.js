@@ -373,49 +373,11 @@ function settOppFastViewportHoyde() {
   });
 }
 
-function scrollChatInputInnISyne() {
-  const input = document.getElementById("chatInput");
-  if (!input) return;
-
-  const vv = window.visualViewport;
-  const synligHoyde = vv ? vv.height : window.innerHeight;
-  const synligTopp = vv ? vv.offsetTop : 0;
-  const synligBunn = synligTopp + synligHoyde;
-  const rect = input.getBoundingClientRect();
-
-  console.log(
-    "[tastatur-diagnostikk] scrollY:", window.scrollY,
-    "| innerHeight:", window.innerHeight,
-    "| visualViewport:", vv ? { height: vv.height, offsetTop: vv.offsetTop } : "ikke støttet",
-    "| input.top:", rect.top, "input.bottom:", rect.bottom
-  );
-
-  const margin = 16;
-  if (rect.bottom > synligBunn - margin || rect.top < synligTopp) {
-    const maalScrollY = Math.max(0, window.scrollY + (rect.bottom - synligBunn) + margin);
-    console.log("[tastatur-diagnostikk] scroller til scrollY =", maalScrollY);
-    window.scrollTo({ top: maalScrollY, behavior: "smooth" });
-  } else {
-    console.log("[tastatur-diagnostikk] input er allerede synlig, scroller ikke");
-  }
-}
-
-function settOppTastaturHandtering() {
-  const input = document.getElementById("chatInput");
-  if (!input) return;
-
-  input.addEventListener("focus", () => {
-    setTimeout(scrollChatInputInnISyne, 300);
-  });
-
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", () => {
-      if (document.activeElement === input) {
-        scrollChatInputInnISyne();
-      }
-    });
-  }
-}
+// scrollChatInputInnISyne() / settOppTastaturHandtering() (resize/visualViewport/
+// focus-basert scrolling) er fjernet - den fungerte ikke pålitelig i bilens
+// nettleser. Bilskjermen løses nå med en ren CSS media query (se style.css)
+// som holder chat-panelet i øvre del av skjermen uten å være avhengig av
+// JS-hendelser som ikke trigges konsekvent der.
 
 // ---------- Midlertidig diagnostikk-boks ----------
 function settOppDiagnostikkBoks() {
@@ -455,7 +417,6 @@ document.addEventListener("DOMContentLoaded", () => {
   settOppInnstillinger();
   settOppTaleGjenkjenning();
   settOppDiagnostikkBoks();
-  settOppTastaturHandtering();
   visForslagsSporsmal(tilfeldigUtvalg(hentAlleForslagsSporsmal(), 4));
 
   const form = document.getElementById("chatForm");

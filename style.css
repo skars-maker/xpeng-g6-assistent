@@ -382,3 +382,62 @@ body {
 .key-toggle-btn:hover { border-color: var(--accent-dim); }
 
 .modal-buttons { display: flex; gap: 10px; }
+
+/* BILENS DASHBORD-SKJERM
+   Kun ultrabrede, lave landskapsskjermer (typisk bil-dashbord) - IKKE vanlige
+   PC-nettleservinduer eller iPhone i liggende format (som holder seg under
+   min-aspect-ratio 2.3/1). Chat-panelet flyttes til øvre del av skjermen slik
+   at det aldri dekkes av et skjermtastatur som kommer opp fra bunnen, uten å
+   være avhengig av JS-hendelser (resize/visualViewport/focus) som ikke
+   trigges pålitelig i denne nettleseren. */
+@media (orientation: landscape) and (max-height: 700px) and (min-aspect-ratio: 2.3/1) {
+  body {
+    overflow: hidden;
+  }
+
+  .hero {
+    min-height: 0;
+    padding: 6px 16px;
+  }
+
+  .hero-bg,
+  .hero-overlay {
+    display: none;
+  }
+
+  .hero-content {
+    position: static;
+    transform: none;
+    width: auto;
+    max-width: none;
+    background: transparent;
+    padding: 0;
+  }
+
+  .hero-content .eyebrow,
+  .hero-content p,
+  .hero-content .cta-btn {
+    display: none;
+  }
+
+  .hero-content h1 {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  .chat-section {
+    padding: 4px 12px;
+  }
+
+  .messages {
+    max-height: calc(var(--vh) * 18);
+  }
+
+  .suggested-chips {
+    display: none;
+  }
+
+  .site-footer {
+    display: none;
+  }
+}
