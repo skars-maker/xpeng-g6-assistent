@@ -383,61 +383,75 @@ body {
 
 .modal-buttons { display: flex; gap: 10px; }
 
-/* BILENS DASHBORD-SKJERM
-   Kun ultrabrede, lave landskapsskjermer (typisk bil-dashbord) - IKKE vanlige
-   PC-nettleservinduer eller iPhone i liggende format (som holder seg under
-   min-aspect-ratio 2.3/1). Chat-panelet flyttes til øvre del av skjermen slik
-   at det aldri dekkes av et skjermtastatur som kommer opp fra bunnen, uten å
-   være avhengig av JS-hendelser (resize/visualViewport/focus) som ikke
-   trigges pålitelig i denne nettleseren. */
-@media (orientation: landscape) and (max-height: 700px) and (min-aspect-ratio: 2.3/1) {
-  body {
-    overflow: hidden;
-  }
+.bilmodus-felt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  color: var(--text);
+  font-size: 14px;
+  cursor: pointer;
+}
 
-  .hero {
-    min-height: 0;
-    padding: 6px 16px;
-  }
+.bilmodus-felt input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
 
-  .hero-bg,
-  .hero-overlay {
-    display: none;
-  }
+/* BILMODUS
+   Manuelt aktivert av brukeren via bryteren i innstillingspanelet (ikke basert
+   på automatisk skjermdeteksjon - det viste seg upålitelig, siden bilens
+   nettleservindu kan variere i størrelse, f.eks. pga. delt skjermbilde med
+   kartappen). Chat-panelet flyttes til øvre del av skjermen slik at det aldri
+   dekkes av et skjermtastatur som kommer opp fra bunnen. */
+body.bilmodus-aktiv {
+  overflow: hidden;
+}
 
-  .hero-content {
-    position: static;
-    transform: none;
-    width: auto;
-    max-width: none;
-    background: transparent;
-    padding: 0;
-  }
+.bilmodus-aktiv .hero {
+  min-height: 0;
+  padding: 6px 16px;
+}
 
-  .hero-content .eyebrow,
-  .hero-content p,
-  .hero-content .cta-btn {
-    display: none;
-  }
+.bilmodus-aktiv .hero-bg,
+.bilmodus-aktiv .hero-overlay {
+  display: none;
+}
 
-  .hero-content h1 {
-    font-size: 16px;
-    margin: 0;
-  }
+.bilmodus-aktiv .hero-content {
+  position: static;
+  transform: none;
+  width: auto;
+  max-width: none;
+  background: transparent;
+  padding: 0;
+}
 
-  .chat-section {
-    padding: 4px 12px;
-  }
+.bilmodus-aktiv .hero-content .eyebrow,
+.bilmodus-aktiv .hero-content p,
+.bilmodus-aktiv .hero-content .cta-btn {
+  display: none;
+}
 
-  .messages {
-    max-height: calc(var(--vh) * 18);
-  }
+.bilmodus-aktiv .hero-content h1 {
+  font-size: 16px;
+  margin: 0;
+}
 
-  .suggested-chips {
-    display: none;
-  }
+.bilmodus-aktiv .chat-section {
+  padding: 4px 12px;
+}
 
-  .site-footer {
-    display: none;
-  }
+.bilmodus-aktiv .messages {
+  max-height: calc(var(--vh) * 18);
+}
+
+.bilmodus-aktiv .suggested-chips {
+  display: none;
+}
+
+.bilmodus-aktiv .site-footer {
+  display: none;
 }

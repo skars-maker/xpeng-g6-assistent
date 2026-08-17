@@ -25,6 +25,16 @@ function hentApiNokkel() {
   return localStorage.getItem("mistral_api_key") || "";
 }
 
+// ---------- Bilmodus ----------
+function hentBilmodus() {
+  return localStorage.getItem("bilmodus") === "true";
+}
+
+function settBilmodus(aktiv) {
+  localStorage.setItem("bilmodus", aktiv ? "true" : "false");
+  document.body.classList.toggle("bilmodus-aktiv", aktiv);
+}
+
 function settOppInnstillinger() {
   const modal = document.getElementById("settingsModal");
   const input = document.getElementById("apiKeyInput");
@@ -32,11 +42,13 @@ function settOppInnstillinger() {
   const saveBtn = document.getElementById("saveKeyBtn");
   const closeBtn = document.getElementById("closeSettingsBtn");
   const toggleKeyBtn = document.getElementById("toggleKeyBtn");
+  const bilmodusToggle = document.getElementById("bilmodusToggle");
 
   const apneModal = () => {
     input.value = hentApiNokkel();
     input.type = "password";
     toggleKeyBtn.textContent = "Vis";
+    bilmodusToggle.checked = hentBilmodus();
     modal.classList.remove("hidden");
   };
 
@@ -47,6 +59,10 @@ function settOppInnstillinger() {
     const skalVises = input.type === "password";
     input.type = skalVises ? "text" : "password";
     toggleKeyBtn.textContent = skalVises ? "Skjul" : "Vis";
+  });
+
+  bilmodusToggle.addEventListener("change", () => {
+    settBilmodus(bilmodusToggle.checked);
   });
 
   saveBtn.addEventListener("click", () => {
@@ -417,6 +433,7 @@ function settOppDiagnostikkBoks() {
 
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
+  settBilmodus(hentBilmodus());
   settOppFastViewportHoyde();
   settOppInnstillinger();
   settOppTaleGjenkjenning();
