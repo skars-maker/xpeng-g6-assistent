@@ -306,23 +306,6 @@ body {
   padding: 20px;
 }
 
-/* MIDLERTIDIG DIAGNOSTIKK-BOKS */
-.diagnostikk-boks {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 99999;
-  background: rgba(0, 0, 0, 0.8);
-  color: #ffffff;
-  font-family: monospace;
-  font-size: 14px;
-  line-height: 1.5;
-  padding: 8px 12px;
-  white-space: pre;
-  pointer-events: none;
-}
-
 /* MODAL */
 .modal {
   position: fixed;
@@ -408,6 +391,9 @@ body {
    dekkes av et skjermtastatur som kommer opp fra bunnen. */
 body.bilmodus-aktiv {
   overflow: hidden;
+  height: calc(var(--vh) * 100);
+  display: flex;
+  flex-direction: column;
 }
 
 .bilmodus-aktiv .hero {
@@ -442,10 +428,18 @@ body.bilmodus-aktiv {
 
 .bilmodus-aktiv .chat-section {
   padding: 4px 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+.bilmodus-aktiv .chat-card {
+  min-height: 0;
 }
 
 .bilmodus-aktiv .messages {
-  max-height: calc(var(--vh) * 18);
+  flex: 1;
+  min-height: 0;
+  max-height: none;
 }
 
 .bilmodus-aktiv .suggested-chips {

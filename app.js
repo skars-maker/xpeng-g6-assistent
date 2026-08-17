@@ -395,49 +395,12 @@ function settOppFastViewportHoyde() {
 // som holder chat-panelet i øvre del av skjermen uten å være avhengig av
 // JS-hendelser som ikke trigges konsekvent der.
 
-// ---------- Midlertidig diagnostikk-boks ----------
-function settOppDiagnostikkBoks() {
-  const boks = document.getElementById("diagnostikkBoks");
-  const input = document.getElementById("chatInput");
-  if (!boks || !input) return;
-
-  const oppdaterDiagnostikk = () => {
-    const vv = window.visualViewport;
-    const rect = input.getBoundingClientRect();
-    const harFokus = document.activeElement === input;
-
-    const aspectRatio = (window.innerWidth / window.innerHeight).toFixed(2);
-
-    boks.textContent =
-      `innerWidth: ${window.innerWidth}\n` +
-      `innerHeight: ${window.innerHeight}\n` +
-      `aspect ratio: ${aspectRatio}\n` +
-      `visualViewport.height: ${vv ? vv.height : "N/A"}\n` +
-      `visualViewport.offsetTop: ${vv ? vv.offsetTop : "N/A"}\n` +
-      `scrollY: ${window.scrollY}\n` +
-      `input har fokus: ${harFokus}\n` +
-      `input.top: ${rect.top}`;
-  };
-
-  oppdaterDiagnostikk();
-
-  window.addEventListener("resize", oppdaterDiagnostikk);
-  window.addEventListener("scroll", oppdaterDiagnostikk);
-  input.addEventListener("focus", oppdaterDiagnostikk);
-  input.addEventListener("blur", oppdaterDiagnostikk);
-
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", oppdaterDiagnostikk);
-  }
-}
-
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
   settBilmodus(hentBilmodus());
   settOppFastViewportHoyde();
   settOppInnstillinger();
   settOppTaleGjenkjenning();
-  settOppDiagnostikkBoks();
   visForslagsSporsmal(tilfeldigUtvalg(hentAlleForslagsSporsmal(), 4));
 
   const form = document.getElementById("chatForm");
