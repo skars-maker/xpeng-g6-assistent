@@ -449,7 +449,19 @@ body.bilmodus-aktiv {
 }
 
 .bilmodus-aktiv .suggested-chips {
+  padding: 0 12px 6px;
+  gap: 6px;
+}
+
+/* Kun plass til én kompakt rad med 2 forslag i Bilmodus - skjul resten */
+.bilmodus-aktiv .suggestion-chip:nth-child(n + 3) {
   display: none;
+}
+
+.bilmodus-aktiv .suggestion-chip {
+  font-size: 11px;
+  line-height: 1.2;
+  padding: 4px 10px;
 }
 
 .bilmodus-aktiv .site-footer {
