@@ -182,7 +182,17 @@ function leggTilMelding(tekst, type) {
   div.className = `msg ${type}`;
   div.textContent = tekst;
   messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
+
+  if (type.startsWith("bot")) {
+    // Vis starten av det nye svaret øverst i meldingsområdet, ikke bunnen
+    // av hele listen - viktig i Bilmodus der tastaturet kan dekke resten.
+    const meldingerRect = messages.getBoundingClientRect();
+    const meldingRect = div.getBoundingClientRect();
+    messages.scrollTop += meldingRect.top - meldingerRect.top;
+  } else {
+    messages.scrollTop = messages.scrollHeight;
+  }
+
   return div;
 }
 
