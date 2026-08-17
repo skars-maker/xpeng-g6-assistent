@@ -390,8 +390,12 @@ function settOppDiagnostikkBoks() {
     const rect = input.getBoundingClientRect();
     const harFokus = document.activeElement === input;
 
+    const aspectRatio = (window.innerWidth / window.innerHeight).toFixed(2);
+
     boks.textContent =
+      `innerWidth: ${window.innerWidth}\n` +
       `innerHeight: ${window.innerHeight}\n` +
+      `aspect ratio: ${aspectRatio}\n` +
       `visualViewport.height: ${vv ? vv.height : "N/A"}\n` +
       `visualViewport.offsetTop: ${vv ? vv.offsetTop : "N/A"}\n` +
       `scrollY: ${window.scrollY}\n` +
