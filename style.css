@@ -465,8 +465,8 @@ body.bilmodus-aktiv {
 }
 
 .bilmodus-hero-img {
-  width: 55%;
-  max-width: 220px;
+  width: 165%;
+  max-width: 660px;
   height: auto;
   border-radius: 12px;
   opacity: 0.9;
