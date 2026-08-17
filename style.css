@@ -391,9 +391,6 @@ body {
    dekkes av et skjermtastatur som kommer opp fra bunnen. */
 body.bilmodus-aktiv {
   overflow: hidden;
-  height: calc(var(--vh) * 100);
-  display: flex;
-  flex-direction: column;
 }
 
 .bilmodus-aktiv .hero {
@@ -428,18 +425,15 @@ body.bilmodus-aktiv {
 
 .bilmodus-aktiv .chat-section {
   padding: 4px 12px;
-  flex: 1;
-  min-height: 0;
 }
 
 .bilmodus-aktiv .chat-card {
-  min-height: 0;
+  max-width: none;
+  width: 100%;
 }
 
 .bilmodus-aktiv .messages {
-  flex: 1;
-  min-height: 0;
-  max-height: none;
+  max-height: calc(var(--vh) * 18);
 }
 
 .bilmodus-aktiv .suggested-chips {
