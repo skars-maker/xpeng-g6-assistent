@@ -197,6 +197,11 @@ body {
   white-space: pre-wrap;
 }
 
+.msg ul {
+  margin: 4px 0;
+  padding-left: 20px;
+}
+
 .msg.bot {
   background: #16201c;
   border: 1px solid var(--border);

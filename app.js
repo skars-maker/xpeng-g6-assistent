@@ -176,11 +176,48 @@ function oppdaterForslagEtterSporsmal(sporsmal) {
 }
 
 // ---------- Chat UI ----------
+function renderMarkdownEnkel(tekst) {
+  const escaped = tekst
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  const medFetSkrift = escaped.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+
+  const linjer = medFetSkrift.split("\n");
+  const resultat = [];
+  let iListe = false;
+
+  for (const linje of linjer) {
+    const listepunkt = linje.match(/^- (.*)$/);
+    if (listepunkt) {
+      if (!iListe) {
+        resultat.push("<ul>");
+        iListe = true;
+      }
+      resultat.push(`<li>${listepunkt[1]}</li>`);
+    } else {
+      if (iListe) {
+        resultat.push("</ul>");
+        iListe = false;
+      }
+      resultat.push(linje);
+    }
+  }
+  if (iListe) resultat.push("</ul>");
+
+  return resultat.join("\n");
+}
+
 function leggTilMelding(tekst, type) {
   const messages = document.getElementById("messages");
   const div = document.createElement("div");
   div.className = `msg ${type}`;
-  div.textContent = tekst;
+  if (type === "bot") {
+    div.innerHTML = renderMarkdownEnkel(tekst);
+  } else {
+    div.textContent = tekst;
+  }
   messages.appendChild(div);
 
   if (type.startsWith("bot")) {
